@@ -1,0 +1,6 @@
+package com.example.proiect1.Repo;
+import com.example.proiect1.Models.Masina;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface MasinaRepo extends JpaRepository<Masina, Long> {
+}
