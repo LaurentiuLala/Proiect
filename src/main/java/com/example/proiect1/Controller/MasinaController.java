@@ -22,13 +22,13 @@ public class MasinaController {
     private final MasinaService masinaService;
 
     @PostMapping
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<MasinaDTO> create(@RequestBody MasinaDTO dto) {
         return ResponseEntity.ok(masinaService.create(dto));
     }
 
     @GetMapping
-    @PreAuthorize("hasAnyAuthority('ADMIN', 'CLIENT')")
+    @PreAuthorize("hasRole('ADMIN', 'CLIENT')")
     public ResponseEntity<List<MasinaDTO>> getAll() {
         return ResponseEntity.ok(masinaService.findAll());
     }

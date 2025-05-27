@@ -34,13 +34,13 @@ public class UserController {
     }
 
     @GetMapping("/test-admin")
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<String> adminOnly() {
         return ResponseEntity.ok("Admin access OK");
     }
 
     @GetMapping("/test-client")
-    @PreAuthorize("hasAuthority('CLIENT')")
+    @PreAuthorize("hasRole('CLIENT')")
     public ResponseEntity<String> clientOnly() {
         return ResponseEntity.ok("Client access OK");
     }
