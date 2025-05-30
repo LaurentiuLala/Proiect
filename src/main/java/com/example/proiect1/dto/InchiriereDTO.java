@@ -9,6 +9,7 @@ public class InchiriereDTO {
     private Long id;
     private Long userId;
     private Long masinaId;
+    private Long locatieId;
     private LocalDate dataInceput;
     private LocalDate dataSfarsit;
 }
