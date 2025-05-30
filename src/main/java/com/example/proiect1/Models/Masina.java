@@ -39,4 +39,9 @@ public class Masina {
 
     @Column(name = "disponibil", nullable = false)
     private boolean disponibil;
+
+    @ManyToOne
+    @JoinColumn(name = "locatie_id")
+    private Locatie locatie;
+
 }
