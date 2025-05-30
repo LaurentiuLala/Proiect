@@ -3,9 +3,11 @@ package com.example.proiect1.Controller;
 import com.example.proiect1.dto.UserDTO;
 import com.example.proiect1.dto.UserRegisterDTO;
 import com.example.proiect1.dto.UserLoginDTO;
+import com.example.proiect1.service.InchiriereService;
 import com.example.proiect1.service.UserService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -21,6 +23,8 @@ import java.util.Map;
 public class UserController {
 
     private final UserService userService;
+    @Autowired
+    private InchiriereService inchiriereService;
 
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody UserRegisterDTO userDTO) {
@@ -33,7 +37,7 @@ public class UserController {
         return new ResponseEntity<>(userService.login(loginDTO), HttpStatus.OK);
     }
 
-    @CrossOrigin(origins = "http://127.0.0.1:5500") // sau "*", pentru test
+    @CrossOrigin(origins = "http://127.0.0.1:5500")
     @GetMapping("/getUserById/{id}")
     public ResponseEntity<UserDTO> getUserById(@PathVariable Long id) {
         UserDTO user = userService.getUserById(id);

@@ -27,9 +27,29 @@ public class InchiriereController {
         return ResponseEntity.ok(inchiriereService.create(dto));
     }
 
+    @GetMapping("/user/{userId}")
+    @PreAuthorize("hasRole('CLIENT')")
+    public List<InchiriereDTO> getByUserId(@PathVariable Long userId) {
+        return inchiriereService.getByUserId(userId);
+    }
+
     @GetMapping
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<List<InchiriereDTO>> getAll() {
         return ResponseEntity.ok(inchiriereService.findAll());
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteInchiriere(@PathVariable Long id) {
+        boolean deleted = inchiriereService.deleteInchiriereById(id);
+        if (deleted) {
+            return ResponseEntity.noContent().build();
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+
 }
+
+

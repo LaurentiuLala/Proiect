@@ -44,4 +44,6 @@ public class Inchiriere {
 
     @Column(name = "data_sfarsit", nullable = false)
     private LocalDate dataSfarsit;
+
+
 }
