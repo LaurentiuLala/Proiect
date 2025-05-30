@@ -1,16 +1,16 @@
 package com.example.proiect1.service;
 
+import com.example.proiect1.Models.User;
+import com.example.proiect1.Repo.UserRepo;
 import com.example.proiect1.dto.UserDTO;
 import com.example.proiect1.dto.UserLoginDTO;
 import com.example.proiect1.dto.UserRegisterDTO;
-import com.example.proiect1.Models.User;
-import com.example.proiect1.Repo.UserRepo;
+import com.example.proiect1.dto.UserUpdateDTO;
 import com.example.proiect1.exception.UserAlreadyExistsException;
+import com.example.proiect1.exception.UserNotFound;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -23,6 +23,7 @@ public class UserService {
         if (userRepository.findByEmail(dto.getEmail()).isPresent()) {
             throw new UserAlreadyExistsException("Email already in use");
         }
+
         User user = User.builder()
                 .name(dto.getName())
                 .lastName(dto.getLastName())
@@ -32,17 +33,7 @@ public class UserService {
                 .build();
 
         User saved = userRepository.save(user);
-        return UserDTO.builder()
-                .id(saved.getId())
-                .name(saved.getName())
-                .lastName(saved.getLastName())
-                .email(saved.getEmail())
-                .role(saved.getRole())
-                .build();
-    }
-
-    public Optional<User> findByEmail(String email) {
-        return userRepository.findByEmail(email);
+        return toDTO(saved);
     }
 
     public UserDTO login(UserLoginDTO loginDTO) {
@@ -53,13 +44,35 @@ public class UserService {
             throw new RuntimeException("Invalid credentials");
         }
 
+        return toDTO(user);
+    }
+
+    public UserDTO getUserById(Long id) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new UserNotFound("User not found"));
+
+        return toDTO(user);
+    }
+
+    public UserDTO updateUser(Long id, UserUpdateDTO dto) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        user.setEmail(dto.getEmail());
+        user.setName(dto.getName());
+        user.setLastName(dto.getLastName());
+
+        User updated = userRepository.save(user);
+        return toDTO(updated);
+    }
+
+    private UserDTO toDTO(User user) {
         return UserDTO.builder()
                 .id(user.getId())
                 .name(user.getName())
                 .lastName(user.getLastName())
                 .email(user.getEmail())
                 .role(user.getRole())
-                .token("dummy-token")
                 .build();
     }
 }

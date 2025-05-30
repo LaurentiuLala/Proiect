@@ -28,8 +28,21 @@ public class MasinaController {
     }
 
     @GetMapping
-    @PreAuthorize("hasRole('ADMIN', 'CLIENT')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'CLIENT')")
     public ResponseEntity<List<MasinaDTO>> getAll() {
         return ResponseEntity.ok(masinaService.findAll());
     }
+
+    @GetMapping("/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'CLIENT')")
+    public ResponseEntity<MasinaDTO> getById(@PathVariable Long id) {
+        return ResponseEntity.ok(masinaService.findById(id));
+    }
+
+    @GetMapping("/by-location/{locatieId}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'CLIENT')")
+    public ResponseEntity<List<MasinaDTO>> getByLocation(@PathVariable Long locatieId) {
+        return ResponseEntity.ok(masinaService.findByLocatieId(locatieId));
+    }
+
 }

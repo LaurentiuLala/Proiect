@@ -3,6 +3,8 @@ package com.example.proiect1.Models;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.List;
+
 import static jakarta.persistence.GenerationType.SEQUENCE;
 
 @AllArgsConstructor
@@ -33,4 +35,8 @@ public class Locatie {
 
     @Column(name = "numar", nullable = false)
     private String numar;
+
+    @OneToMany(mappedBy = "locatie")
+    private List<Masina> masini;
+
 }

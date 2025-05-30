@@ -13,4 +13,7 @@ public class MasinaDTO {
     private int anFabricatie;
     private double pretPeZi;
     private boolean disponibil;
+    private Long locatieId;
+    private String locatieDescriere;
+
 }
