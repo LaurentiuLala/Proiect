@@ -36,7 +36,11 @@ public class Locatie {
     @Column(name = "numar", nullable = false)
     private String numar;
 
-    @OneToMany(mappedBy = "locatie")
+    @OneToMany(mappedBy = "locatie", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Masina> masini;
+
+    @OneToMany(mappedBy = "locatie", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Inchiriere> inchirieri;
+
 
 }

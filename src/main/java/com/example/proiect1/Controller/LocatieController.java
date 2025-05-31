@@ -27,6 +27,12 @@ public class LocatieController {
         return ResponseEntity.ok(locatieService.create(dto));
     }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteLocatie(@PathVariable Long id) {
+        locatieService.deleteLocatie(id);
+        return ResponseEntity.noContent().build();
+    }
+
     @GetMapping
     @PreAuthorize("hasAnyRole('ADMIN', 'CLIENT')")
     public ResponseEntity<List<LocatieDTO>> getAll() {

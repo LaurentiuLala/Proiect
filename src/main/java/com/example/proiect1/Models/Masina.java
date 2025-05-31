@@ -3,6 +3,8 @@ package com.example.proiect1.Models;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.List;
+
 import static jakarta.persistence.GenerationType.SEQUENCE;
 
 @AllArgsConstructor
@@ -43,5 +45,9 @@ public class Masina {
     @ManyToOne
     @JoinColumn(name = "locatie_id")
     private Locatie locatie;
+
+    @OneToMany(mappedBy = "masina", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Inchiriere> inchirieri;
+
 
 }

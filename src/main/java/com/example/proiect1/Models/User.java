@@ -3,6 +3,8 @@ package com.example.proiect1.Models;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.List;
+
 import static jakarta.persistence.GenerationType.SEQUENCE;
 
 @AllArgsConstructor
@@ -63,6 +65,12 @@ public class User {
             nullable = false
     )
     private String role;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Inchiriere> inchirieri;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
+    private List<Review> reviews;
 
 
 

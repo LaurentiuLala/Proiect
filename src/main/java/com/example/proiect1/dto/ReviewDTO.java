@@ -6,7 +6,7 @@ import lombok.Data;
 public class ReviewDTO {
     private Long id;
     private String comentariu;
-    private int rating;
+    private Integer rating;
     private Long userId;
     private Long masinaId;
 }

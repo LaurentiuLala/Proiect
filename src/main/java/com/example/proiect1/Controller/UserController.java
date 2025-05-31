@@ -1,5 +1,7 @@
 package com.example.proiect1.Controller;
 
+import com.example.proiect1.Models.User;
+import com.example.proiect1.Repo.UserRepo;
 import com.example.proiect1.dto.UserDTO;
 import com.example.proiect1.dto.UserRegisterDTO;
 import com.example.proiect1.dto.UserLoginDTO;
@@ -11,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
@@ -21,9 +24,9 @@ import java.util.Map;
 @AllArgsConstructor
 @Slf4j
 public class UserController {
-
-    private final UserService userService;
     @Autowired
+    private final UserService userService;
+    private final UserRepo userRepo;
     private InchiriereService inchiriereService;
 
     @PostMapping("/register")
@@ -37,16 +40,45 @@ public class UserController {
         return new ResponseEntity<>(userService.login(loginDTO), HttpStatus.OK);
     }
 
-    @CrossOrigin(origins = "http://127.0.0.1:5500")
     @GetMapping("/getUserById/{id}")
     public ResponseEntity<UserDTO> getUserById(@PathVariable Long id) {
         UserDTO user = userService.getUserById(id);
         return ResponseEntity.ok(user);
     }
 
+
+    @GetMapping("/account/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'CLIENT')")
+    public ResponseEntity<UserDTO> getAccountById(@PathVariable Long id) {
+        User user = userRepo.findById(id)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        UserDTO dto = new UserDTO();
+        dto.setId(user.getId());
+        dto.setName(user.getName());
+        dto.setLastName(user.getLastName());
+        dto.setEmail(user.getEmail());
+        dto.setRole(user.getRole());
+
+        return ResponseEntity.ok(dto);
+    }
+
     @PutMapping("/update/{id}")
     public ResponseEntity<UserDTO> updateUser(@PathVariable Long id, @RequestBody com.example.proiect1.dto.UserUpdateDTO dto) {
         return ResponseEntity.ok(userService.updateUser(id, dto));
+    }
+
+    @GetMapping
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<?> getAllUsers() {
+        return ResponseEntity.ok(userService.getAllUsers());
+    }
+
+    @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<?> deleteUser(@PathVariable Long id) {
+        userService.deleteUser(id);
+        return ResponseEntity.ok(Map.of("message", "User deleted"));
     }
 
 
