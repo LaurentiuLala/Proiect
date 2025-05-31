@@ -36,5 +36,13 @@ public class LocatieService {
             return dto;
         }).collect(Collectors.toList());
     }
+
+    public void deleteLocatie(Long id) {
+        if (!locatieRepository.existsById(id)) {
+            throw new RuntimeException("Locația nu a fost găsită");
+        }
+        locatieRepository.deleteById(id);
+    }
+
 }
 

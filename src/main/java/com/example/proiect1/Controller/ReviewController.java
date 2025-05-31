@@ -5,6 +5,7 @@ import com.example.proiect1.service.ReviewService;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.Authentication;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -16,19 +17,34 @@ import java.util.List;
 @CrossOrigin
 @Slf4j
 @RequestMapping("/api/reviews")
-
 public class ReviewController {
 
     private final ReviewService reviewService;
 
     @PostMapping
-    @PreAuthorize("hasRole('CLIENT')")
+    // Elimină sau comentează PreAuthorize
     public ResponseEntity<ReviewDTO> create(@RequestBody ReviewDTO dto) {
         return ResponseEntity.ok(reviewService.create(dto));
     }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteReview(
+            @PathVariable Long id,
+            @RequestParam Long userId,
+            @RequestParam String role) {
+
+        if ("ADMIN".equalsIgnoreCase(role)) {
+            reviewService.deleteById(id);
+        } else if ("CLIENT".equalsIgnoreCase(role)) {
+            reviewService.deleteIfOwnReview(id, userId);
+        } else {
+            return ResponseEntity.status(403).build();
+        }
+        return ResponseEntity.noContent().build();
+    }
+
+
     @GetMapping
-    @PreAuthorize("hasAnyRole('ADMIN', 'CLIENT')")
     public ResponseEntity<List<ReviewDTO>> getAll() {
         return ResponseEntity.ok(reviewService.findAll());
     }

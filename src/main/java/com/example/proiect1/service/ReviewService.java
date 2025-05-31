@@ -22,8 +22,11 @@ public class ReviewService {
     private final MasinaRepo masinaRepository;
 
     public ReviewDTO create(ReviewDTO dto) {
-        User user = userRepository.findById(dto.getUserId()).orElseThrow();
-        Masina masina = masinaRepository.findById(dto.getMasinaId()).orElseThrow();
+        User user = userRepository.findById(dto.getUserId())
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        Masina masina = masinaRepository.findById(dto.getMasinaId())
+                .orElseThrow(() -> new RuntimeException("Masina not found"));
 
         Review review = Review.builder()
                 .comentariu(dto.getComentariu())
@@ -33,9 +36,27 @@ public class ReviewService {
                 .build();
 
         review = reviewRepository.save(review);
+
         dto.setId(review.getId());
+        dto.setUserId(user.getId());
         return dto;
     }
+
+    public void deleteById(Long id) {
+        reviewRepository.deleteById(id);
+    }
+
+    public void deleteIfOwnReview(Long reviewId, Long userId) {
+        Review review = reviewRepository.findById(reviewId)
+                .orElseThrow(() -> new RuntimeException("Review not found"));
+
+        if (review.getUser().getId() != userId) {
+            throw new RuntimeException("Nu ai dreptul să ștergi acest review");
+        }
+
+        reviewRepository.delete(review);
+    }
+
 
     public List<ReviewDTO> findAll() {
         return reviewRepository.findAll().stream().map(review -> {
@@ -49,4 +70,3 @@ public class ReviewService {
         }).collect(Collectors.toList());
     }
 }
-

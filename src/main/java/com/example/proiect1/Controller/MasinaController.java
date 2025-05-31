@@ -45,4 +45,11 @@ public class MasinaController {
         return ResponseEntity.ok(masinaService.findByLocatieId(locatieId));
     }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteMasina(@PathVariable Long id) {
+        masinaService.deleteMasina(id);
+        return ResponseEntity.noContent().build();
+    }
+
+
 }

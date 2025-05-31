@@ -27,7 +27,7 @@ public class MasinaService {
                 .model(dto.getModel())
                 .anFabricatie(dto.getAnFabricatie())
                 .pretPeZi(dto.getPretPeZi())
-                .disponibil(dto.isDisponibil())
+                .disponibil(true)
                 .locatie(locatie)
                 .build();
 
@@ -71,5 +71,13 @@ public class MasinaService {
                 .locatieDescriere(descriereLocatie)
                 .build();
     }
+
+    public void deleteMasina(Long id) {
+        if (!masinaRepository.existsById(id)) {
+            throw new RuntimeException("Mașina nu a fost găsită");
+        }
+        masinaRepository.deleteById(id);
+    }
+
 }
 
