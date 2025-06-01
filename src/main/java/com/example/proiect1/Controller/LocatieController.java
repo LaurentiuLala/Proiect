@@ -3,7 +3,6 @@ package com.example.proiect1.Controller;
 import com.example.proiect1.dto.LocatieDTO;
 import com.example.proiect1.service.LocatieService;
 import lombok.AllArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;

@@ -9,7 +9,6 @@ import com.example.proiect1.Repo.InchiriereRepo;
 import com.example.proiect1.Repo.MasinaRepo;
 import com.example.proiect1.Repo.UserRepo;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

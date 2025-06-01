@@ -3,11 +3,8 @@ package com.example.proiect1.Controller;
 import com.example.proiect1.dto.ReviewDTO;
 import com.example.proiect1.service.ReviewService;
 import lombok.AllArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.core.Authentication;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -22,7 +19,6 @@ public class ReviewController {
     private final ReviewService reviewService;
 
     @PostMapping
-    // Elimină sau comentează PreAuthorize
     public ResponseEntity<ReviewDTO> create(@RequestBody ReviewDTO dto) {
         return ResponseEntity.ok(reviewService.create(dto));
     }
