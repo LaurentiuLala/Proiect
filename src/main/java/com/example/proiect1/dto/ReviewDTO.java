@@ -1,12 +1,14 @@
 package com.example.proiect1.dto;
 
-import lombok.Data;
+import jakarta.validation.constraints.NotNull;
+import lombok.Builder;
 
-@Data
-public class ReviewDTO {
-    private Long id;
-    private String comentariu;
-    private Integer rating;
-    private Long userId;
-    private Long masinaId;
+@Builder
+public record ReviewDTO(
+        Long id,
+        @NotNull String comentariu,
+        @NotNull Integer rating,
+        @NotNull Long userId,
+        @NotNull Long masinaId
+) {
 }

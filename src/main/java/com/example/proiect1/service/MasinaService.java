@@ -20,13 +20,14 @@ public class MasinaService {
     private final LocatieRepo locatieRepository;
 
     public MasinaDTO create(MasinaDTO dto) {
-        Locatie locatie = locatieRepository.findById(dto.getLocatieId())
-                .orElseThrow(() -> new LocationNotFound("Locatie not found with id: " + dto.getLocatieId()));
+        Locatie locatie = locatieRepository.findById(dto.locatieId())
+                .orElseThrow(() -> new LocationNotFound("Locatie not found with id: " + dto.locatieId()));
+
         Masina masina = Masina.builder()
-                .marca(dto.getMarca())
-                .model(dto.getModel())
-                .anFabricatie(dto.getAnFabricatie())
-                .pretPeZi(dto.getPretPeZi())
+                .marca(dto.marca())
+                .model(dto.model())
+                .anFabricatie(dto.anFabricatie())
+                .pretPeZi(dto.pretPeZi())
                 .disponibil(true)
                 .locatie(locatie)
                 .build();

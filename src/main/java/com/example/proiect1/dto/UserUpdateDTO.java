@@ -1,10 +1,14 @@
 package com.example.proiect1.dto;
 
-import lombok.Data;
+import jakarta.validation.constraints.NotNull;
+import lombok.Builder;
 
-@Data
-public class UserUpdateDTO {
-    private String email;
-    private String name;
-    private String lastName;
-}
+@Builder
+
+public record UserUpdateDTO(
+        @NotNull String email,
+        @NotNull String name,
+        @NotNull String lastName
+) {}
+
+

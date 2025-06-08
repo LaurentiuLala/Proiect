@@ -1,14 +1,13 @@
 package com.example.proiect1.dto;
 
-import lombok.*;
+import jakarta.validation.constraints.NotNull;
+import lombok.Builder;
 
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
 @Builder
-public class UserRegisterDTO {
-    private String name;
-    private String lastName;
-    private String email;
-    private String password;
-}
+
+public record UserRegisterDTO(
+        @NotNull String name,
+        @NotNull String lastName,
+        @NotNull String email,
+        @NotNull String password
+){}
