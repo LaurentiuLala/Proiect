@@ -1,11 +1,13 @@
 package com.example.proiect1.dto;
 
-import lombok.Data;
+import jakarta.validation.constraints.NotNull;
+import lombok.Builder;
 
-@Data
-public class LocatieDTO {
-    private Long id;
-    private String oras;
-    private String strada;
-    private String numar;
+@Builder
+public record LocatieDTO(
+        Long id,
+        @NotNull String oras,
+        @NotNull String strada,
+        @NotNull String numar
+) {
 }

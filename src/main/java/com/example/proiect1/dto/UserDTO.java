@@ -1,16 +1,14 @@
 package com.example.proiect1.dto;
 
-import lombok.*;
+import jakarta.validation.constraints.NotNull;
+import lombok.Builder;
 
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
 @Builder
-public class UserDTO {
-    private Long id;
-    private String name;
-    private String lastName;
-    private String email;
-    private String role;
+public record UserDTO(
+        Long id,
+        @NotNull String name,
+        @NotNull String lastName,
+        @NotNull String email,
+        @NotNull String role
+) {
 }
-

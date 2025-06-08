@@ -1,7 +1,11 @@
 package com.example.proiect1.dto;
-import lombok.Data;
-@Data
-public class UserLoginDTO {
-    private String email;
-    private String password;
-}
+
+
+import jakarta.validation.constraints.NotNull;
+import lombok.Builder;
+
+@Builder
+public record UserLoginDTO(
+        @NotNull String email,
+        @NotNull String password
+) {}

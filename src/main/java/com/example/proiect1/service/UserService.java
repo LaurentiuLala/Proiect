@@ -23,15 +23,15 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
 
     public UserDTO register(UserRegisterDTO dto) {
-        if (userRepository.findByEmail(dto.getEmail()).isPresent()) {
+        if (userRepository.findByEmail(dto.email()).isPresent()) {
             throw new UserAlreadyExistsException("Email already in use");
         }
 
         User user = User.builder()
-                .name(dto.getName())
-                .lastName(dto.getLastName())
-                .email(dto.getEmail())
-                .password(passwordEncoder.encode(dto.getPassword()))
+                .name(dto.name())
+                .lastName(dto.lastName())
+                .email(dto.email())
+                .password(passwordEncoder.encode(dto.password()))
                 .role("CLIENT")
                 .build();
 
@@ -40,10 +40,10 @@ public class UserService {
     }
 
     public UserDTO login(UserLoginDTO loginDTO) {
-        User user = userRepository.findByEmail(loginDTO.getEmail())
+        User user = userRepository.findByEmail(loginDTO.email())
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
-        if (!passwordEncoder.matches(loginDTO.getPassword(), user.getPassword())) {
+        if (!passwordEncoder.matches(loginDTO.password(), user.getPassword())) {
             throw new RuntimeException("Invalid credentials");
         }
 
@@ -61,9 +61,9 @@ public class UserService {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
-        user.setEmail(dto.getEmail());
-        user.setName(dto.getName());
-        user.setLastName(dto.getLastName());
+        user.setEmail(dto.email());
+        user.setName(dto.name());
+        user.setLastName(dto.lastName());
 
         User updated = userRepository.save(user);
         return toDTO(updated);

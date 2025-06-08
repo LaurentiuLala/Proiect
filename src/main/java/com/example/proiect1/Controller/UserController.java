@@ -49,16 +49,7 @@ public class UserController {
     @GetMapping("/account/{id}")
     @PreAuthorize("hasAnyRole('ADMIN', 'CLIENT')")
     public ResponseEntity<UserDTO> getAccountById(@PathVariable Long id) {
-        User user = userRepo.findById(id)
-                .orElseThrow(() -> new RuntimeException("User not found"));
-
-        UserDTO dto = new UserDTO();
-        dto.setId(user.getId());
-        dto.setName(user.getName());
-        dto.setLastName(user.getLastName());
-        dto.setEmail(user.getEmail());
-        dto.setRole(user.getRole());
-
+        UserDTO dto = userService.getUserById(id);
         return ResponseEntity.ok(dto);
     }
 

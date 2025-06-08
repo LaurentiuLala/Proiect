@@ -1,16 +1,17 @@
 package com.example.proiect1.dto;
 
+import jakarta.validation.constraints.NotNull;
+import lombok.Builder;
 
-import lombok.Data;
 import java.time.LocalDate;
 
-@Data
-public class InchiriereDTO {
-    private Long id;
-    private Long userId;
-    private Long masinaId;
-    private Long locatieId;
-    private LocalDate dataInceput;
-    private LocalDate dataSfarsit;
+@Builder
+public record InchiriereDTO(
+        Long id,
+        @NotNull Long userId,
+        @NotNull Long masinaId,
+        @NotNull Long locatieId,
+        @NotNull LocalDate dataInceput,
+        @NotNull LocalDate dataSfarsit
+) {
 }
-

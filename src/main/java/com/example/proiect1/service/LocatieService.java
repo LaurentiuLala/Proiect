@@ -17,24 +17,29 @@ public class LocatieService {
 
     public LocatieDTO create(LocatieDTO dto) {
         Locatie locatie = Locatie.builder()
-                .oras(dto.getOras())
-                .strada(dto.getStrada())
-                .numar(dto.getNumar())
+                .oras(dto.oras())
+                .strada(dto.strada())
+                .numar(dto.numar())
                 .build();
         locatie = locatieRepository.save(locatie);
-        dto.setId(locatie.getId());
-        return dto;
+
+        return LocatieDTO.builder()
+                .id(locatie.getId())
+                .oras(locatie.getOras())
+                .strada(locatie.getStrada())
+                .numar(locatie.getNumar())
+                .build();
     }
 
     public List<LocatieDTO> findAll() {
-        return locatieRepository.findAll().stream().map(locatie -> {
-            LocatieDTO dto = new LocatieDTO();
-            dto.setId(locatie.getId());
-            dto.setOras(locatie.getOras());
-            dto.setStrada(locatie.getStrada());
-            dto.setNumar(locatie.getNumar());
-            return dto;
-        }).collect(Collectors.toList());
+        return locatieRepository.findAll().stream()
+                .map(locatie -> LocatieDTO.builder()
+                        .id(locatie.getId())
+                        .oras(locatie.getOras())
+                        .strada(locatie.getStrada())
+                        .numar(locatie.getNumar())
+                        .build())
+                .collect(Collectors.toList());
     }
 
     public void deleteLocatie(Long id) {

@@ -22,24 +22,28 @@ public class ReviewService {
     private final MasinaRepo masinaRepository;
 
     public ReviewDTO create(ReviewDTO dto) {
-        User user = userRepository.findById(dto.getUserId())
+        User user = userRepository.findById(dto.userId())
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
-        Masina masina = masinaRepository.findById(dto.getMasinaId())
+        Masina masina = masinaRepository.findById(dto.masinaId())
                 .orElseThrow(() -> new RuntimeException("Masina not found"));
 
         Review review = Review.builder()
-                .comentariu(dto.getComentariu())
-                .rating(dto.getRating())
+                .comentariu(dto.comentariu())
+                .rating(dto.rating())
                 .user(user)
                 .masina(masina)
                 .build();
 
         review = reviewRepository.save(review);
 
-        dto.setId(review.getId());
-        dto.setUserId(user.getId());
-        return dto;
+        return ReviewDTO.builder()
+                .id(review.getId())
+                .comentariu(review.getComentariu())
+                .rating(review.getRating())
+                .userId(user.getId())
+                .masinaId(masina.getId())
+                .build();
     }
 
     public void deleteById(Long id) {
@@ -57,16 +61,15 @@ public class ReviewService {
         reviewRepository.delete(review);
     }
 
-
     public List<ReviewDTO> findAll() {
-        return reviewRepository.findAll().stream().map(review -> {
-            ReviewDTO dto = new ReviewDTO();
-            dto.setId(review.getId());
-            dto.setComentariu(review.getComentariu());
-            dto.setRating(review.getRating());
-            dto.setUserId(review.getUser().getId());
-            dto.setMasinaId(review.getMasina().getId());
-            return dto;
-        }).collect(Collectors.toList());
+        return reviewRepository.findAll().stream()
+                .map(review -> ReviewDTO.builder()
+                        .id(review.getId())
+                        .comentariu(review.getComentariu())
+                        .rating(review.getRating())
+                        .userId(review.getUser().getId())
+                        .masinaId(review.getMasina().getId())
+                        .build()
+                ).collect(Collectors.toList());
     }
 }
