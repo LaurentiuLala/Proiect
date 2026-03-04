@@ -27,13 +27,13 @@ public class LocatieController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> deleteLocatie(@PathVariable Long id) {
         locatieService.deleteLocatie(id);
         return ResponseEntity.noContent().build();
     }
 
     @GetMapping
-    @PreAuthorize("hasAnyRole('ADMIN', 'CLIENT')")
     public ResponseEntity<List<LocatieDTO>> getAll() {
         return ResponseEntity.ok(locatieService.findAll());
     }

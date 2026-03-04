@@ -40,6 +40,7 @@ public class UserController {
     }
 
     @GetMapping("/getUserById/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'CLIENT')")
     public ResponseEntity<UserDTO> getUserById(@PathVariable Long id) {
         UserDTO user = userService.getUserById(id);
         return ResponseEntity.ok(user);
@@ -54,6 +55,7 @@ public class UserController {
     }
 
     @PutMapping("/update/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'CLIENT')")
     public ResponseEntity<UserDTO> updateUser(@PathVariable Long id, @RequestBody com.example.proiect1.dto.UserUpdateDTO dto) {
         return ResponseEntity.ok(userService.updateUser(id, dto));
     }

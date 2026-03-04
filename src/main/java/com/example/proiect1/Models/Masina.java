@@ -39,6 +39,9 @@ public class Masina {
     @Column(name = "pret_pe_zi", nullable = false)
     private double pretPeZi;
 
+    @Column(name = "cantitate", nullable = false)
+    private int cantitate;
+
     @Column(name = "disponibil", nullable = false)
     private boolean disponibil;
 
