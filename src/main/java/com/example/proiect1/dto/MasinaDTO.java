@@ -10,6 +10,7 @@ public record MasinaDTO(
         @NotNull String model,
         @NotNull int anFabricatie,
         @NotNull double pretPeZi,
+        @NotNull int cantitate,
         @NotNull boolean disponibil,
         @NotNull Long locatieId,
         @NotNull String locatieDescriere

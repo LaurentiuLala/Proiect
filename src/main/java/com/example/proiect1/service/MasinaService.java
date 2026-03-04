@@ -28,7 +28,8 @@ public class MasinaService {
                 .model(dto.model())
                 .anFabricatie(dto.anFabricatie())
                 .pretPeZi(dto.pretPeZi())
-                .disponibil(true)
+                .cantitate(dto.cantitate())
+                .disponibil(dto.cantitate() > 0)
                 .locatie(locatie)
                 .build();
 
@@ -67,6 +68,7 @@ public class MasinaService {
                 .model(m.getModel())
                 .anFabricatie(m.getAnFabricatie())
                 .pretPeZi(m.getPretPeZi())
+                .cantitate(m.getCantitate())
                 .disponibil(m.isDisponibil())
                 .locatieId(locatieId)
                 .locatieDescriere(descriereLocatie)
