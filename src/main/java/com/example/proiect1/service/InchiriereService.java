@@ -130,7 +130,7 @@ public class InchiriereService {
                             "\nPlease provide this code to the administrator when picking up the car.");
             mailSender.send(message);
         } catch (Exception e) {
-            // Log the error but don't fail the rental process
+
             System.err.println("Failed to send email: " + e.getMessage());
         }
     }
@@ -141,8 +141,7 @@ public class InchiriereService {
         
         inchiriere.setStatus(newStatus);
 
-        // If returned or canceled, we might want to release the car, but the logic in delete already does some of this.
-        // For now, let's just update the status.
+
         if (newStatus == RentalStatus.RETURNED || newStatus == RentalStatus.CANCELED) {
             Masina masina = inchiriere.getMasina();
             masina.setCantitate(masina.getCantitate() + 1);
