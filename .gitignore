@@ -4,6 +4,10 @@ target/
 !**/src/main/**/target/
 !**/src/test/**/target/
 
+### Local Config ###
+application-local.yaml
+.env
+
 ### STS ###
 .apt_generated
 .classpath
