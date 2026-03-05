@@ -34,7 +34,7 @@ public class SecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/users/register", "/api/users/login").permitAll()
-                        .requestMatchers(org.springframework.http.HttpMethod.GET, "/api/masini/**", "/api/locatii/**").permitAll()
+                        .requestMatchers(org.springframework.http.HttpMethod.GET, "/api/masini/**", "/api/locatii/**", "/api/images/cars/**").permitAll()
                         .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
                         .anyRequest().authenticated()
                 )

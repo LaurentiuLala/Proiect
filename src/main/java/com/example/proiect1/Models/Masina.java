@@ -45,6 +45,11 @@ public class Masina {
     @Column(name = "disponibil", nullable = false)
     private boolean disponibil;
 
+    @ElementCollection
+    @CollectionTable(name = "masina_images", joinColumns = @JoinColumn(name = "masina_id"))
+    @Column(name = "image_path")
+    private List<String> images;
+
     @ManyToOne
     @JoinColumn(name = "locatie_id")
     private Locatie locatie;

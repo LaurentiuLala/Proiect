@@ -1,6 +1,7 @@
 package com.example.proiect1.Controller;
 
 import com.example.proiect1.dto.InchiriereDTO;
+import com.example.proiect1.Models.RentalStatus;
 import com.example.proiect1.service.InchiriereService;
 import com.example.proiect1.system.CustomUserDetails;
 import lombok.AllArgsConstructor;
@@ -26,6 +27,12 @@ public class InchiriereController {
     @PreAuthorize("hasRole('CLIENT')")
     public ResponseEntity<InchiriereDTO> create(@RequestBody InchiriereDTO dto) {
         return ResponseEntity.ok(inchiriereService.create(dto));
+    }
+
+    @PatchMapping("/status/{code}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<InchiriereDTO> updateStatus(@PathVariable String code, @RequestParam RentalStatus status) {
+        return ResponseEntity.ok(inchiriereService.updateStatusByCode(code, status));
     }
 
     @GetMapping("/user/{userId}")

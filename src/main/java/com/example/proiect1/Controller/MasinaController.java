@@ -9,7 +9,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -27,6 +29,26 @@ public class MasinaController {
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<MasinaDTO> create(@RequestBody MasinaDTO dto) {
         return ResponseEntity.ok(masinaService.create(dto));
+    }
+
+    @PostMapping("/{id}/images")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<Void> uploadImages(@PathVariable Long id, @RequestParam("files") List<MultipartFile> files) throws IOException {
+        masinaService.uploadImages(id, files);
+        return ResponseEntity.ok().build();
+    }
+
+    @DeleteMapping("/{id}/images")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<Void> deleteAllImages(@PathVariable Long id) throws IOException {
+        masinaService.deleteAllImages(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<MasinaDTO> update(@PathVariable Long id, @RequestBody MasinaDTO dto) {
+        return ResponseEntity.ok(masinaService.updateMasina(id, dto));
     }
 
     @GetMapping
