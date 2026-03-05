@@ -3,6 +3,8 @@ package com.example.proiect1.dto;
 import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 
+import java.util.List;
+
 @Builder
 public record MasinaDTO(
         Long id,
@@ -13,6 +15,7 @@ public record MasinaDTO(
         @NotNull int cantitate,
         @NotNull boolean disponibil,
         @NotNull Long locatieId,
-        @NotNull String locatieDescriere
+        @NotNull String locatieDescriere,
+        List<String> images
 ) {
 }

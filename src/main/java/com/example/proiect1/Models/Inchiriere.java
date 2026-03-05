@@ -45,5 +45,12 @@ public class Inchiriere {
     @Column(name = "data_sfarsit", nullable = false)
     private LocalDate dataSfarsit;
 
+    @Column(name = "code", nullable = false, unique = true)
+    private String code;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status", nullable = false)
+    private RentalStatus status;
+
 
 }

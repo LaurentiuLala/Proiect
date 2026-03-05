@@ -49,5 +49,23 @@ public class LocatieService {
         locatieRepository.deleteById(id);
     }
 
+    public LocatieDTO updateLocatie(Long id, LocatieDTO dto) {
+        Locatie locatie = locatieRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Locație not found with id: " + id));
+
+        locatie.setOras(dto.oras());
+        locatie.setStrada(dto.strada());
+        locatie.setNumar(dto.numar());
+
+        locatie = locatieRepository.save(locatie);
+
+        return LocatieDTO.builder()
+                .id(locatie.getId())
+                .oras(locatie.getOras())
+                .strada(locatie.getStrada())
+                .numar(locatie.getNumar())
+                .build();
+    }
+
 }
 

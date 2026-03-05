@@ -33,6 +33,12 @@ public class LocatieController {
         return ResponseEntity.noContent().build();
     }
 
+    @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<LocatieDTO> update(@PathVariable Long id, @RequestBody LocatieDTO dto) {
+        return ResponseEntity.ok(locatieService.updateLocatie(id, dto));
+    }
+
     @GetMapping
     public ResponseEntity<List<LocatieDTO>> getAll() {
         return ResponseEntity.ok(locatieService.findAll());

@@ -9,8 +9,15 @@ import com.example.proiect1.exception.LocationNotFound;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
+import org.springframework.web.multipart.MultipartFile;
 
 @Service
 @RequiredArgsConstructor
@@ -18,6 +25,7 @@ public class MasinaService {
 
     private final MasinaRepo masinaRepository;
     private final LocatieRepo locatieRepository;
+    private final String uploadDir = "uploads/cars/";
 
     public MasinaDTO create(MasinaDTO dto) {
         Locatie locatie = locatieRepository.findById(dto.locatieId())
@@ -31,7 +39,70 @@ public class MasinaService {
                 .cantitate(dto.cantitate())
                 .disponibil(dto.cantitate() > 0)
                 .locatie(locatie)
+                .images(new ArrayList<>())
                 .build();
+
+        return convertToDto(masinaRepository.save(masina));
+    }
+
+    public void uploadImages(Long masinaId, List<MultipartFile> files) throws IOException {
+        Masina masina = masinaRepository.findById(masinaId)
+                .orElseThrow(() -> new CarNotFound("Masina not found with id: " + masinaId));
+
+        Path carUploadPath = Paths.get(uploadDir + masinaId);
+        if (!Files.exists(carUploadPath)) {
+            Files.createDirectories(carUploadPath);
+        }
+
+        List<String> imagePaths = masina.getImages();
+        if (imagePaths == null) imagePaths = new ArrayList<>();
+
+        for (MultipartFile file : files) {
+            String fileName = UUID.randomUUID().toString() + "_" + file.getOriginalFilename();
+            Path filePath = carUploadPath.resolve(fileName);
+            Files.copy(file.getInputStream(), filePath);
+            imagePaths.add("/api/images/cars/" + masinaId + "/" + fileName);
+        }
+
+        masina.setImages(imagePaths);
+        masinaRepository.save(masina);
+    }
+
+    public void deleteAllImages(Long masinaId) throws IOException {
+        Masina masina = masinaRepository.findById(masinaId)
+                .orElseThrow(() -> new CarNotFound("Masina not found with id: " + masinaId));
+        
+        Path carUploadPath = Paths.get(uploadDir + masinaId);
+        if (Files.exists(carUploadPath)) {
+            Files.walk(carUploadPath)
+                .sorted((a, b) -> b.compareTo(a)) // Delete files before directory
+                .forEach(path -> {
+                    try {
+                        Files.delete(path);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                });
+        }
+        
+        masina.getImages().clear();
+        masinaRepository.save(masina);
+    }
+
+    public MasinaDTO updateMasina(Long id, MasinaDTO dto) {
+        Masina masina = masinaRepository.findById(id)
+                .orElseThrow(() -> new CarNotFound("Masina not found with id: " + id));
+
+        Locatie locatie = locatieRepository.findById(dto.locatieId())
+                .orElseThrow(() -> new LocationNotFound("Locatie not found with id: " + dto.locatieId()));
+
+        masina.setMarca(dto.marca());
+        masina.setModel(dto.model());
+        masina.setAnFabricatie(dto.anFabricatie());
+        masina.setPretPeZi(dto.pretPeZi());
+        masina.setCantitate(dto.cantitate());
+        masina.setDisponibil(dto.cantitate() > 0);
+        masina.setLocatie(locatie);
 
         return convertToDto(masinaRepository.save(masina));
     }
@@ -72,6 +143,7 @@ public class MasinaService {
                 .disponibil(m.isDisponibil())
                 .locatieId(locatieId)
                 .locatieDescriere(descriereLocatie)
+                .images(m.getImages())
                 .build();
     }
 

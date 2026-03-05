@@ -1,5 +1,6 @@
 package com.example.proiect1.dto;
 
+import com.example.proiect1.Models.RentalStatus;
 import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 
@@ -12,6 +13,8 @@ public record InchiriereDTO(
         @NotNull Long masinaId,
         @NotNull Long locatieId,
         @NotNull LocalDate dataInceput,
-        @NotNull LocalDate dataSfarsit
+        @NotNull LocalDate dataSfarsit,
+        String code,
+        RentalStatus status
 ) {
 }
